@@ -155,7 +155,10 @@ syn region sdServiceBlock matchgroup=sdHeader start=/^\[Service\]/ end=/^\[/me=e
 syn match sdServiceKey contained /^BusName=/
 syn match sdServiceKey contained /^\%(RemainAfterExit\|GuessMainPID\|PermissionsStartOnly\|RootDirectoryStartOnly\|NonBlocking\|ControlGroupModify\)=/ nextgroup=sdBool,sdErr
 syn match sdServiceKey contained /^\%(SysVStartPriority\|FsckPassNo\)=/ nextgroup=sdUInt,sdErr
-syn match sdServiceKey contained /^\%(Restart\|Timeout\)Sec=/ nextgroup=sdDuration,sdErr
+syn match sdServiceKey contained /^\%(Restart\|Timeout\|Watchdog\)Sec=/ nextgroup=sdDuration,sdErr
+syn match sdServiceKey contained /^StartLimit\%(Interval\|Burst\)=/ nextgroup=sdDuration,sdErr
+syn match sdServiceKey contained /^StartLimitAction=/ nextgroup=sdLimitActionType,sdErr
+syn match sdServiceKey contained /^\%(Success\|RestartPrevent\)ExitStatus=/ nextgroup=sdErr
 syn match sdServiceKey contained /^Sockets=/ nextgroup=sdUnitList
 syn match sdServiceKey contained /^PIDFile=/ nextgroup=sdFilename,sdErr
 syn match sdServiceKey contained /^Type=/ nextgroup=sdServiceType,sdErr
@@ -164,6 +167,7 @@ syn match sdServiceKey contained /^NotifyAccess=/ nextgroup=sdNotifyType,sdErr
 syn keyword sdServiceType contained nextgroup=sdErr simple forking dbus oneshot notify idle
 syn keyword sdRestartType contained nextgroup=sdErr no on-success on-failure on-abort always
 syn keyword sdNotifyType  contained nextgroup=sdErr none main all
+syn keyword sdLimitActionType  contained nextgroup=sdErr none reboot reboot-force reboot-immediate
 
 " [Socket] {{{1
 syn region sdSocketBlock matchgroup=sdHeader start=/^\[Socket\]/ end=/^\[/me=e-2 contains=sdSocketKey,sdExecKey
@@ -171,7 +175,7 @@ syn match sdSocketKey contained /^Listen\%(Stream\|Datagram\|SequentialPacket\|F
 syn match sdSocketKey contained /^Listen\%(FIFO\|Special\)=/ nextgroup=sdFilename,sdErr
 syn match sdSocketKey contained /^\%(Socket\|Directory\)Mode=/ nextgroup=sdOctal,sdErr
 syn match sdSocketKey contained /^\%(Backlog\|MaxConnections\|Priority\|ReceiveBuffer\|SendBuffer\|IPTTL\|Mark\|PipeSize\|MessageQueueMaxMessages\|MessageQueueMessageSize\)=/ nextgroup=sdUInt,sdErr
-syn match sdSocketKey contained /^\%(Accept\|KeepAlive\|FreeBind\|Transparent\|Broadcast\)=/ nextgroup=sdBool,sdErr
+syn match sdSocketKey contained /^\%(Accept\|KeepAlive\|FreeBind\|Transparent\|Broadcast\|PassCredentials\|PassSecurity\)=/ nextgroup=sdBool,sdErr
 syn match sdSocketKey contained /^BindToDevice=/
 syn match sdSocketKey contained /^Service=/ nextgroup=sdUnitList
 syn match sdSocketKey contained /^BindIPv6Only=/ nextgroup=sdBindIPv6,sdErr
@@ -246,6 +250,7 @@ hi def link sdOctal             sdValue
 hi def link sdDuration          sdValue
 hi def link sdVirtType          sdValue
 hi def link sdServiceType       sdValue
+hi def link sdLimitActionType   sdValue
 hi def link sdNotifyType        sdValue
 hi def link sdSecurityType      sdValue
 hi def link sdSecureBits        sdValue
